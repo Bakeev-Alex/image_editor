@@ -1,0 +1,17 @@
+{% extends 'index.html' %}
+
+{% block block_image %}
+    <h2>{{ SearchResultsView.query }}</h2>
+    {% for art_obj in object_list %}
+        <h2>{{art_obj.article}}</h2>
+        {% for image in art_obj.image.all %}
+            <div class="inner">
+                <div>
+                    <a href="{% url 'delete_image' image.id %}">Delete</a>
+                    <img src="{{ image.picture.url }}">
+                </div>
+            </div>
+        {% endfor %}
+    {% endfor %}
+    {% include "main_editor/pagination_search.html" %}
+{% endblock %}

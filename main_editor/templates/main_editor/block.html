@@ -1,0 +1,16 @@
+{% extends 'index.html' %}
+
+{% block block_image %}
+    {% for artic in pages.object_list %}
+        <h2>{{ artic.article }}</h2>
+        {% for image in artic.image.all %}
+            <div class="inner">
+                <div>
+                    <a href="{% url 'delete_image' image.id %}">Delete</a>
+                    <img src="{{ image.picture.url }}">
+                </div>
+            </div>
+        {% endfor %}
+    {% endfor %}
+    {% include "main_editor/pagination.html" %}
+{% endblock %}
