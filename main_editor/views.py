@@ -3,17 +3,28 @@ from .models import ArticleDetail, ImageArticle
 from django.db.models import Q
 from django.views.generic import ListView
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-
+from django.template import RequestContext
 # Create your views here.
+
+
 
 def index(request):
     articles = ArticleDetail.objects.all()
-    paginator = Paginator(articles, 2)
+
     page_number = request.GET.get('page')
+    index_count = 2
+    if request.GET.get('limit'):
+        index_count = int(request.GET.get('limit'))
+
+    paginator = Paginator(articles, index_count)
+
     try:
         pages = paginator.get_page(page_number)
     except PageNotAnInteger:
         pages = paginator.page(1)
+    except EmptyPage:
+        pages = pages.page(pages.num_pages)
+
     is_paginated = pages.has_other_pages()
 
     content = {'pages': pages,
@@ -32,6 +43,7 @@ class SearchResultsView(ListView):
         articles_obj = ArticleDetail.objects.filter(Q(brand__icontains=query) | Q(article__icontains=query))
         return articles_obj
 
+    #Формирует контекст шаблона, получаем контекст шаблона добавляем список рубрик
     def get_context_data(self, **kwargs):
         context = super(SearchResultsView, self).get_context_data(**kwargs)
         q = self.request.GET.get('q')
