@@ -1,16 +1,22 @@
 {% extends 'index.html' %}
 
 {% block block_image %}
+
     {% for article in pages.object_list %}
         <h2>{{ article.article }}</h2>
         {% for image in article.image.all %}
             <div class="inner">
                 <a href="{% url 'delete_image' image.id %}">Delete</a>
-                <div class="picture">
-                    <a href="{{ image.picture.url }}"><img src="{{ image.picture.url }}"></a>
+                <p>Размер: {{ image.picture.height }}x{{ image.picture.width }}</p>
+                {{ image.picture_name }} <input type="number"><br>
+                <input type="submit" value="go">
+                <div class="row">
+                  <div>
+                      <a href="{{ image.picture.url }}" data-lightbox="{{ article.article }}"><img src="{{ image.picture.url }}" class="example-image"></a>
+                  </div>
                 </div>
             </div>
         {% endfor %}
     {% endfor %}
-    {% include "main_editor/pagination.html" %}
+    {% include "include/pagination.html" %}
 {% endblock %}

@@ -58,7 +58,7 @@ ROOT_URLCONF = 'image_editor.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -80,7 +80,7 @@ WSGI_APPLICATION = 'image_editor.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'mysql_server_has_gone_away',
-        'NAME': 'image_editor',
+        'NAME': 'editor_image_2',
         'USER': 'root',
         'PASSWORD': '',
         'HOST': '127.0.0.1',

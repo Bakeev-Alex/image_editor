@@ -1,0 +1,13 @@
+{% extends 'index.html' %}
+
+
+{% block block_image %}
+    {% for item in post_image %}
+        {{ item.picture }}<br>
+    {% endfor %}
+    <form method="post">
+        {% csrf_token %}
+        <input type="text" name="forms">
+        <input type="submit">
+    </form>
+{% endblock %}
