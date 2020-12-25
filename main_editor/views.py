@@ -97,8 +97,12 @@ def UpdateName(request, article_id):
     post = get_object_or_404(ArticleDetail, pk=article_id)
     post_image = ImageArticle.objects.filter(article_id=article_id)
     query = request.POST.get('forms')
-    #print(query)
+    print(query)
     forms = ImageArticleForm()
+    if request.method == 'POST':
+        forms = ImageArticleForm(request.POST)
+        if forms.is_valid():
+            forms.save()
     return render(request, 'main_editor/test.html', {'post': post,
                                                      'post_image': post_image,
                                                      'forms': forms,

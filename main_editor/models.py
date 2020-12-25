@@ -51,3 +51,5 @@ class ImageArticle(models.Model):
     def __str__(self):
         return str(self.picture_name)
 
+class TestModel(models.Model):
+    article = models.IntegerField('Артикул продавца', primary_key=True)
