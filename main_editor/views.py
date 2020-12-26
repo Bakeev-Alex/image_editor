@@ -19,6 +19,8 @@ def ImageNameForm(request, picture_name):
 def UpdateName(request, article_id):
     post = get_object_or_404(ImageArticle, pk=article_id)
     forms = ImageArticleForm()
+    test = request.POST.get('picture_name')
+    print(test)
     if request.method == "POST":
         picture = request.POST.get('picture_name')
         if picture != post.picture_name:
@@ -37,10 +39,10 @@ def UpdateName(request, article_id):
 def index(request):
     articles = ArticleDetail.objects.all()
     image_size = ImageArticle.objects.all()
-    #test = UpdateName(request, image_size.article)
-    test = request.GET.get('test')
-    print(test)
-    print(type(test))
+    if request.method == 'POST':
+        test = UpdateName(request, image_size.article)
+        test = request.POST.get('test')
+        print(test)
 
     page_number = request.GET.get('page')
     limit = request.GET.get('limit')
