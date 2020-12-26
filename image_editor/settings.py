@@ -79,8 +79,8 @@ WSGI_APPLICATION = 'image_editor.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'mysql_server_has_gone_away',
-        'NAME': 'editor_image_2',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'editor_image',
         'USER': 'root',
         'PASSWORD': '',
         'HOST': '127.0.0.1',

@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 
 
 
@@ -14,7 +15,7 @@ class BrandModel(models.Model):
 
 class ArticleDetail(models.Model):
     # article просто уникальным (unique = True), но использовать id лучше воспринимается и потом удобнее +
-    article = models.IntegerField('Артикул продавца', primary_key=True)
+    article = models.IntegerField('Артикул продавца', unique=True)
     barcode = models.CharField('Штрих код', max_length=100)
     brand = models.ForeignKey(BrandModel, on_delete=models.CASCADE, related_name='brand',
                                 verbose_name="article_brand")
@@ -51,5 +52,9 @@ class ImageArticle(models.Model):
     def __str__(self):
         return str(self.picture_name)
 
+    def get_absolute_url(self):
+        return reverse('test', args=[self.id])
+"""
 class TestModel(models.Model):
     article = models.IntegerField('Артикул продавца', primary_key=True)
+"""

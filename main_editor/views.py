@@ -1,9 +1,12 @@
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import ArticleDetail, ImageArticle, BrandModel
 from django.db.models import Q
-from django.views.generic import ListView, UpdateView
+from django.views.generic import ListView
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .forms import ImageArticleForm
+
+from django.core.exceptions import ObjectDoesNotExist
 
 
 """
@@ -13,10 +16,31 @@ def ImageNameForm(request, picture_name):
     return render(request, 'main_editor/block.html', {'form': form})
 """
 
+def UpdateName(request, article_id):
+    post = get_object_or_404(ImageArticle, pk=article_id)
+    forms = ImageArticleForm()
+    if request.method == "POST":
+        picture = request.POST.get('picture_name')
+        if picture != post.picture_name:
+            print(picture)
+    if request.method == "POST":
+        forms = ImageArticleForm(request.POST, instance=post)
+        if forms.is_valid():
+            forms.save()
+            return redirect(post)
+        else:
+            forms = ImageArticleForm()
+
+    return render(request, 'main_editor/test.html', {'post': post,
+                                                     'forms': forms})
+
 def index(request):
     articles = ArticleDetail.objects.all()
     image_size = ImageArticle.objects.all()
-
+    #test = UpdateName(request, image_size.article)
+    test = request.GET.get('test')
+    print(test)
+    print(type(test))
 
     page_number = request.GET.get('page')
     limit = request.GET.get('limit')
@@ -69,6 +93,7 @@ def detail_image(request, id):
     image_detail = ImageArticle.objects.get(pk=id)
     return render(request, 'main_editor/index.html', {'image_detail': image_detail})
 
+
 def get_brand(request, brand_id):
     # Верхних brand_id равен значению из таблицы ArticleDetail.brand_id
     articles_brand = ArticleDetail.objects.filter(brand_id=brand_id)
@@ -93,17 +118,5 @@ def get_brand(request, brand_id):
                'index_count': index_count}
     return render(request, 'main_editor/brand.html', content)
 
-def UpdateName(request, article_id):
-    post = get_object_or_404(ArticleDetail, pk=article_id)
-    post_image = ImageArticle.objects.filter(article_id=article_id)
-    query = request.POST.get('forms')
-    print(query)
-    forms = ImageArticleForm()
-    if request.method == 'POST':
-        forms = ImageArticleForm(request.POST)
-        if forms.is_valid():
-            forms.save()
-    return render(request, 'main_editor/test.html', {'post': post,
-                                                     'post_image': post_image,
-                                                     'forms': forms,
-                                                     'query': query})
+
+

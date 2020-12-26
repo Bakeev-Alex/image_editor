@@ -2,12 +2,20 @@
 
 
 {% block block_image %}
-    {% for item in post_image %}
-        {{ item.picture }}<br>
-    {% endfor %}
+
+    {{ post.picture }}<br>
+    {{ post.picture_name }}<br>
+    {{ post.article_id }}<br>
+
     <form method="post">
         {% csrf_token %}
-        <input type="text" name="forms">
+        <input type="text" name="picture_name" value="{{ post.picture_name }}">
         <input type="submit">
     </form>
 {% endblock %}
+
+<!--{% comment %}value="{{ post_image.picture_name }}{% endcomment %}
+        <input type="number" name="id" value="{{ post.article_id }}">
+        <input type="text" name="forms" value="{{ post.picture_name }}">
+
+-->
