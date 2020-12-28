@@ -7,32 +7,9 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .forms import ImageArticleForm
 from django.conf import settings
 
-import os, sys
+import os
 
 from django.core.exceptions import ObjectDoesNotExist
-
-
-def UpdateName(request, article_id):
-    post = get_object_or_404(ImageArticle, pk=article_id)
-    forms = ImageArticleForm()
-    test = request.POST.get('picture_name')
-    print(test)
-    """
-    if request.method == "POST":
-        picture = request.POST.get('picture_name')
-        if picture != post.picture_name:
-            print(picture)
-    """
-    if request.method == "POST":
-        forms = ImageArticleForm(request.POST, instance=post)
-        if forms.is_valid():
-            forms.save()
-            return redirect(post)
-        else:
-            forms = ImageArticleForm()
-
-    return render(request, 'main_editor/test.html', {'post': post,
-                                                     'forms': forms})
 
 
 def index(request):
@@ -49,23 +26,19 @@ def index(request):
             forms = ImageArticleForm(request.POST, instance=test)
             if forms.is_valid():
                 forms.save(commit=False)
-                path_name = test.picture.name
+                path_name = test.picture.path
                 path_image = test.picture.path.split('\\')
                 del path_image[-1]
                 separator = '\\'
                 path_image = separator.join(path_image)
                 name = path_image + '\\' + test.picture_name + '.jpg'
-                print(path_name)
-                print(path_image)
-                print(name)
-                #os.rename(path_name, name)
+                os.rename(path_name, name)
                 if test.picture.path != name:
-                    pass
+                    test.picture = name
+                    test.save(update_fields=['picture'])
                 forms.save()
                 host = request.META.get('HTTP_REFERER')
                 return redirect(host)
-
-
 
     index_count = int(request.GET.get('limit'))
     paginator = Paginator(articles, index_count)

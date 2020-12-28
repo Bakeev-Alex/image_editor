@@ -39,15 +39,15 @@ class ImageArticle(models.Model):
     """
     def save(self, *args, **kwargs):
         if self.article:
-            self.picture = self.picture_name
+            self.picture_name = self.article
         else:
-            self.picture_name = create_path
+            self.picture_name = None
         super(ImageArticle, self).save(*args, **kwargs)
     """
 
     class Meta:
         verbose_name_plural = 'Изображения'
-        ordering = ['article']
+        ordering = ['picture_name']
 
     def __str__(self):
         return str(self.picture_name)
