@@ -9,8 +9,12 @@
                 <a href="{% url 'delete_image' image.id %}">Delete</a>
                 <p>Размер: {{ image.picture.height }}x{{ image.picture.width }}</p>
                 <!-- Сюда добавить форму, для каждого изображения -->
-                <input type="number" name="test" value="{{ image.article_id }}"><br>
-                <input type="text" name="picture_name" value="{{ post.picture_name }}">
+                {{ test.picture_name }}
+                <form method="post">{% csrf_token %}
+                    <input type="number" name="id" value="{{ image.pk }}"><br>
+                    <input type="text" name="picture_name" value="{{ image.picture_name }}">
+                    <input type="submit">
+                </form>
                 <div class="row">
                   <div>
                       <a href="{{ image.picture.url }}" data-lightbox="{{ article.article }}"><img src="{{ image.picture.url }}" class="example-image"></a>

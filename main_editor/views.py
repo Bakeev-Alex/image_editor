@@ -9,22 +9,17 @@ from .forms import ImageArticleForm
 from django.core.exceptions import ObjectDoesNotExist
 
 
-"""
-def ImageNameForm(request, picture_name):
-    example_form_set = modelformset_factory(ImageArticle, fields=('picture_name',))
-    form = example_form_set()
-    return render(request, 'main_editor/block.html', {'form': form})
-"""
-
 def UpdateName(request, article_id):
     post = get_object_or_404(ImageArticle, pk=article_id)
     forms = ImageArticleForm()
     test = request.POST.get('picture_name')
     print(test)
+    """
     if request.method == "POST":
         picture = request.POST.get('picture_name')
         if picture != post.picture_name:
             print(picture)
+    """
     if request.method == "POST":
         forms = ImageArticleForm(request.POST, instance=post)
         if forms.is_valid():
@@ -36,18 +31,27 @@ def UpdateName(request, article_id):
     return render(request, 'main_editor/test.html', {'post': post,
                                                      'forms': forms})
 
+
 def index(request):
     articles = ArticleDetail.objects.all()
     image_size = ImageArticle.objects.all()
-    if request.method == 'POST':
-        test = UpdateName(request, image_size.article)
-        test = request.POST.get('test')
-        print(test)
 
     page_number = request.GET.get('page')
-    limit = request.GET.get('limit')
-    index_count = int(request.GET.get('limit'))
 
+
+    art_id = request.POST.get('id')
+    picture = request.POST.get('picture_name')
+    #print(art_id, picture)
+    if art_id:
+        test = ImageArticle.objects.get(pk=art_id)
+        if request.method == "POST":
+            forms = ImageArticleForm(request.POST, instance=test)
+            if forms.is_valid():
+                forms.save()
+                return redirect('http://127.0.0.1:8000/?limit=1&page=1')
+        print(test.picture_name)
+
+    index_count = int(request.GET.get('limit'))
     paginator = Paginator(articles, index_count)
     try:
         pages = paginator.get_page(page_number)
@@ -60,7 +64,7 @@ def index(request):
 
     content = {'pages': pages,
                'is_paginated': is_paginated,
-               'limit': limit,
+               'limit': index_count,
                'image_size': image_size}
     return render(request, 'main_editor/block.html', content)
 

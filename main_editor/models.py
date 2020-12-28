@@ -54,7 +54,3 @@ class ImageArticle(models.Model):
 
     def get_absolute_url(self):
         return reverse('test', args=[self.id])
-"""
-class TestModel(models.Model):
-    article = models.IntegerField('Артикул продавца', primary_key=True)
-"""
