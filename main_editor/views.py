@@ -5,6 +5,9 @@ from django.db.models import Q
 from django.views.generic import ListView
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .forms import ImageArticleForm
+from django.conf import settings
+
+import os, sys
 
 from django.core.exceptions import ObjectDoesNotExist
 
@@ -38,18 +41,31 @@ def index(request):
 
     page_number = request.GET.get('page')
 
-
     art_id = request.POST.get('id')
-    picture = request.POST.get('picture_name')
-    #print(art_id, picture)
     if art_id:
         test = ImageArticle.objects.get(pk=art_id)
+
         if request.method == "POST":
             forms = ImageArticleForm(request.POST, instance=test)
             if forms.is_valid():
+                forms.save(commit=False)
+                path_name = test.picture.name
+                path_image = test.picture.path.split('\\')
+                del path_image[-1]
+                separator = '\\'
+                path_image = separator.join(path_image)
+                name = path_image + '\\' + test.picture_name + '.jpg'
+                print(path_name)
+                print(path_image)
+                print(name)
+                #os.rename(path_name, name)
+                if test.picture.path != name:
+                    pass
                 forms.save()
-                return redirect('http://127.0.0.1:8000/?limit=1&page=1')
-        print(test.picture_name)
+                host = request.META.get('HTTP_REFERER')
+                return redirect(host)
+
+
 
     index_count = int(request.GET.get('limit'))
     paginator = Paginator(articles, index_count)

@@ -39,9 +39,9 @@ class ImageArticle(models.Model):
     """
     def save(self, *args, **kwargs):
         if self.article:
-            self.picture_name = self.picture
+            self.picture = self.picture_name
         else:
-            self.picture_name = None
+            self.picture_name = create_path
         super(ImageArticle, self).save(*args, **kwargs)
     """
 
