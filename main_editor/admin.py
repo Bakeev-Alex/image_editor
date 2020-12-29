@@ -12,6 +12,8 @@ class ArticleDetailAdmin(admin.ModelAdmin):
 
     inlines = [ProductImagesInline]
 
+
+
 @admin.register(BrandModel)
 class BrandAdmin(admin.ModelAdmin):
     list_display = ['brand_name',]

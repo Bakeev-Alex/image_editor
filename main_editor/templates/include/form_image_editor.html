@@ -1,0 +1,5 @@
+<form method="post" id="ajax_form">
+    {% csrf_token %}
+    <input type="text" name="picture_name" value="{{ image.picture_name }}"><input type="submit" value="Send">
+    <input type="hidden" name="id" value="{{ image.pk }}" readonly><br>
+</form>

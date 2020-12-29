@@ -6,11 +6,12 @@
     <h2>{{ brand.brand_name }}</h2>
     {% for item in pages %}
         <h2>{{ item.article }}</h2>
+
         {% for image in item.image.all %}
             <div class="inner">
                 <a href="{% url 'delete_image' image.id %}">Delete</a>
                 <p>Размер: {{ image.picture.height }}x{{ image.picture.width }}</p>
-                {{ post.picture }}<br>
+                {% include 'include/form_image_editor.html' %}
                 <div class="row">
                   <div>
                       <a href="{{ image.picture.url }}" data-lightbox="{{ item.article }}"><img src="{{ image.picture.url }}" class="example-image"></a>
@@ -18,6 +19,7 @@
                 </div>
             </div>
         {% endfor %}
+
     {% endfor %}
     {% include "include/pagination_brand.html" %}
 {% endblock %}

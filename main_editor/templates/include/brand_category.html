@@ -1,4 +1,5 @@
 <div class="list-group">
+    <h3>Категории</h3>
     {% for brand in brands %}
       <a href="{% url 'brand_urls' brand.pk %}?limit={{ index_count|default:'2' }}" class="list-group-item list-group-item-action">{{ brand.brand_name }}</a>
     {% endfor %}
