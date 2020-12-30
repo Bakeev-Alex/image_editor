@@ -9,6 +9,7 @@ class ProductImagesInline(admin.StackedInline):
 @admin.register(ArticleDetail)
 class ArticleDetailAdmin(admin.ModelAdmin):
     list_display = ['article', 'barcode', 'brand', 'description']
+    search_fields = ('pk', 'brand__brand_name', 'barcode')
 
     inlines = [ProductImagesInline]
 

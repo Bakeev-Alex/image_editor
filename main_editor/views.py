@@ -5,8 +5,8 @@ from django.db.models import Q
 from django.views.generic import ListView
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .forms import ImageArticleForm
-from django.views.generic.edit import FormMixin
 
+import random
 import logging
 import os
 
@@ -21,14 +21,16 @@ def edit_name(request):
                 forms.save(commit=False)
                 path_name = photo_id.picture.path
                 path_image = photo_id.picture.path.split('\\')
+                extension = path_image[-1].split('.')[-1]
                 del path_image[-1]
                 separator = '\\'
                 path_image = separator.join(path_image)
-                name = path_image + '\\' + photo_id.picture_name + '.jpg'
+                name = path_image + '\\' + str(photo_id.article) + '_' + photo_id.picture_name + '.' + extension
                 try:
                     os.rename(path_name, name)
                 except OSError:
-                    name = path_image + '\\' + photo_id.picture_name + '_1' + '.jpg'
+                    # рандом автоматом
+                    name = path_image + '\\' + str(photo_id.article) + '_' + photo_id.picture_name + '_' + str(random.randint(1, 10)) + '.' + extension
                     os.rename(path_name, name)
 
                 if photo_id.picture.path != name:
@@ -37,6 +39,7 @@ def edit_name(request):
                 forms.save()
                 host = request.META.get('HTTP_REFERER')
                 return redirect(host)
+
 
 def index(request):
     articles = ArticleDetail.objects.all()
@@ -133,6 +136,3 @@ def get_brand(request, brand_id):
                'is_paginated': is_paginated,
                'index_count': index_count}
     return render(request, 'main_editor/brand.html', content)
-
-
-

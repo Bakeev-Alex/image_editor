@@ -80,7 +80,7 @@ WSGI_APPLICATION = 'image_editor.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'editor_image',
+        'NAME': 'image_editor',
         'USER': 'root',
         'PASSWORD': '',
         'HOST': '127.0.0.1',

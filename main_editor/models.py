@@ -15,11 +15,11 @@ class BrandModel(models.Model):
 
 class ArticleDetail(models.Model):
     # article просто уникальным (unique = True), но использовать id лучше воспринимается и потом удобнее +
-    article = models.IntegerField('Артикул продавца', unique=True)
+    article = models.IntegerField('Артикул продавца', primary_key=True)
     barcode = models.CharField('Штрих код', max_length=100)
     brand = models.ForeignKey(BrandModel, on_delete=models.CASCADE, related_name='brand',
                                 verbose_name="article_brand")
-    description = models.CharField('Краткое описание', max_length=400)
+    description = models.CharField('Краткое описание', max_length=400, blank=True)
 
     class Meta:
         verbose_name_plural = 'Артикли'
